@@ -1,18 +1,26 @@
 Backtest Summary for RELIANCE.NS
-Date Range: 2023-06-24 to 2025-06-29
+Date Range: 2020-06-24 to 2023-06-29
 Initial Capital: 100000.00 INR
-Final Portfolio Value: 146103.14 INR
-Number of Buy Signals: 5
-Number of Sell Signals: 5
-Number of Completed Trades (Buy+Sell): 4
+Final Portfolio Value: 172692.82 INR
+Number of Buy Signals: 45
+Number of Sell Signals: 67
+Number of Completed Trades (Buy+Sell): 8
 
 Trade History:
-Buy on 2023-11-28 00:00:00 at 1197.20 INR, 84.0 shares
-Sell on 2024-04-09 00:00:00 at 1463.65 INR, 84.0 shares
-Buy on 2024-04-19 00:00:00 at 1470.12 INR, 86.0 shares
-Sell on 2024-05-02 00:00:00 at 1466.55 INR, 86.0 shares
-Buy on 2024-06-13 00:00:00 at 1465.25 INR, 85.0 shares
-Sell on 2024-08-13 00:00:00 at 1463.62 INR, 85.0 shares
-Buy on 2025-02-05 00:00:00 at 1278.20 INR, 98.0 shares
-Sell on 2025-02-18 00:00:00 at 1225.40 INR, 98.0 shares
-Buy on 2025-04-01 00:00:00 at 1252.60 INR, 96.0 shares
+Buy on 2020-10-26 00:00:00 at 933.18 INR, 107.0 shares
+Sell on 2021-01-21 00:00:00 at 965.51 INR, 107.0 shares
+Buy on 2021-01-29 00:00:00 at 847.11 INR, 122.0 shares
+Sell on 2021-02-17 00:00:00 at 958.08 INR, 122.0 shares
+Buy on 2021-03-25 00:00:00 at 915.86 INR, 127.0 shares
+Sell on 2021-05-28 00:00:00 at 963.39 INR, 127.0 shares
+Buy on 2021-11-03 00:00:00 at 1146.18 INR, 107.0 shares
+Sell on 2022-01-12 00:00:00 at 1163.49 INR, 107.0 shares
+Buy on 2022-03-07 00:00:00 at 1033.55 INR, 120.0 shares
+Sell on 2022-03-22 00:00:00 at 1168.13 INR, 120.0 shares
+Buy on 2022-05-09 00:00:00 at 1162.20 INR, 121.0 shares
+Sell on 2022-06-02 00:00:00 at 1257.26 INR, 121.0 shares
+Buy on 2022-06-22 00:00:00 at 1156.33 INR, 131.0 shares
+Sell on 2022-08-01 00:00:00 at 1188.29 INR, 131.0 shares
+Buy on 2022-09-26 00:00:00 at 1097.15 INR, 142.0 shares
+Sell on 2022-11-04 00:00:00 at 1196.55 INR, 142.0 shares
+Buy on 2022-12-23 00:00:00 at 1154.76 INR, 147.0 shares

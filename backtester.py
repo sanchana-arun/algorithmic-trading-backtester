@@ -4,8 +4,8 @@ import matplotlib.pyplot as plt
 
 #defining stock and date range
 stock = 'RELIANCE.NS'
-start_date = '2023-06-24'
-end_date = '2025-06-29'
+start_date = '2020-06-24'
+end_date = '2023-06-29'
 
 #download data
 data = yf.download(stock, start=start_date, end=end_date, auto_adjust=True)
@@ -30,12 +30,24 @@ data['SMA50'] = data['Close'].rolling(window=50).mean()
 
 data = data.dropna(subset=['SMA20', 'SMA50']).copy()
 
+N = 20
+
+data['Mean'] = data['Close'].rolling(window=N).mean()
+threshold = 0.05*data['Mean']
+
+
 #buy and sell signal logic
 # data['Buy_Signal'] = ((data['Close'] < data['SMA20']) & (data['Close'].shift(1) >= data['SMA20'].shift(1))).astype(int)
 # data['Sell_Signal'] = ((data['Close'] > data['SMA20']) & (data['Close'].shift(1) <= data['SMA20'].shift(1))).astype(int)
 
-data['Buy_Signal'] = ((data['SMA50'] < data['SMA20']) & (data['SMA50'].shift(1) >= data['SMA20'].shift(1))).astype(int)
-data['Sell_Signal'] = ((data['SMA50'] > data['SMA20']) & (data['SMA50'].shift(1) <= data['SMA20'].shift(1))).astype(int)
+#crossover logic
+# data['Buy_Signal'] = ((data['SMA50'] < data['SMA20']) & (data['SMA50'].shift(1) >= data['SMA20'].shift(1))).astype(int)
+# data['Sell_Signal'] = ((data['SMA50'] > data['SMA20']) & (data['SMA50'].shift(1) <= data['SMA20'].shift(1))).astype(int)
+
+#for mean reversion strategy
+data['Buy_Signal'] = (data['Close'] < (data['Mean'] - threshold)).astype(int)
+data['Sell_Signal'] = (data['Close'] > (data['Mean'] + threshold)).astype(int)
+
 
 #backtesting logic
 initial_cash = 100000
@@ -50,7 +62,7 @@ for i in range(len(data)):
 
     #buy signal
     if data['Buy_Signal'].iloc[i] == 1 and position == 0:
-        shares = cash // data['Low'].iloc[i]
+        shares = cash // data['Close'].iloc[i]
 
         if shares > 0:
             cost = shares * data['Close'].iloc[i]
@@ -65,14 +77,8 @@ for i in range(len(data)):
             # print(f"Buy on {data['Date'].iloc[i]} at {data['Close'].iloc[i]:.2f} INR, {shares} shares")
 
     elif data['Sell_Signal'].iloc[i] == 1 and position == 1:
-
-        ### ==== does not work as expected ==== ###
-        # #adding condition to sell only if the selling price is higher than the prioe with which the stock was bought
-        # last_buy = next((trade for trade in reversed(trades) if trade['Type'] == 'Buy'), None)
-
-        # if last_buy and data['Close'].iloc[i] > last_buy['Price']:
         
-        cash += shares * data['High'].iloc[i]
+        cash += shares * data['Close'].iloc[i]
         trades.append({
             'Date': data['Date'].iloc[i],
             'Type': 'Sell',
