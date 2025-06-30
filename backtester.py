@@ -8,7 +8,9 @@ start_date = '2023-06-24'
 end_date = '2025-06-29'
 
 #download data
-data = yf.download(stock, start=start_date, end=end_date, auto_adjust=True)\
+data = yf.download(stock, start=start_date, end=end_date, auto_adjust=True)
+data.columns = data.columns.get_level_values(0)
+
 
 #checking if data download was successful
 if data.empty:
@@ -16,8 +18,8 @@ if data.empty:
     exit()
 
 #select close price and drop any NaN values
-data = data[['Close']].dropna()
-data.columns = ['Close']
+data = data[['Close', 'Low', 'High']].dropna()
+# data.columns = ['Close']
 data.reset_index(inplace=True)   #to make date an index
 
 
@@ -48,7 +50,7 @@ for i in range(len(data)):
 
     #buy signal
     if data['Buy_Signal'].iloc[i] == 1 and position == 0:
-        shares = cash // data['Close'].iloc[i]
+        shares = cash // data['Low'].iloc[i]
 
         if shares > 0:
             cost = shares * data['Close'].iloc[i]
@@ -60,17 +62,24 @@ for i in range(len(data)):
                 'Price': data['Close'].iloc[i],
                 'Shares': shares
             })
-            print(f"Buy on {data['Date'].iloc[i]} at {data['Close'].iloc[i]:.2f} INR, {shares} shares")
+            # print(f"Buy on {data['Date'].iloc[i]} at {data['Close'].iloc[i]:.2f} INR, {shares} shares")
 
     elif data['Sell_Signal'].iloc[i] == 1 and position == 1:
-        cash += shares * data['Close'].iloc[i]
+
+        ### ==== does not work as expected ==== ###
+        # #adding condition to sell only if the selling price is higher than the prioe with which the stock was bought
+        # last_buy = next((trade for trade in reversed(trades) if trade['Type'] == 'Buy'), None)
+
+        # if last_buy and data['Close'].iloc[i] > last_buy['Price']:
+        
+        cash += shares * data['High'].iloc[i]
         trades.append({
             'Date': data['Date'].iloc[i],
             'Type': 'Sell',
             'Price': data['Close'].iloc[i],
             'Shares': shares
         })
-        print(f"Sell on {data['Date'].iloc[i]} at {data['Close'].iloc[i]:.2f} INR, {shares} shares")
+        # print(f"Sell on {data['Date'].iloc[i]} at {data['Close'].iloc[i]:.2f} INR, {shares} shares")
         position = 0
         shares = 0
 
@@ -116,7 +125,7 @@ plt.grid(True)
 plt.legend()
 plt.tight_layout()
 plt.savefig('portfolio_growth.png')
-plt.show()
+# plt.show()
 
 print(f"\nNumber of Buy Signals: {data['Buy_Signal'].sum()}")
 print(f"Number of Sell Signals: {data['Sell_Signal'].sum()}")
